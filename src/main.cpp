@@ -9,6 +9,6 @@ int main()
 
     File* f = new File();
 
-    f->getPhoto("C:\\Users\\EmreKara\\Desktop\\fart.java");
+    f->getPhoto("image\\AileBoyuKirmiziKare.bmp");
 
 }
