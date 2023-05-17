@@ -10,8 +10,8 @@ void File::getPhoto(std::string path)
 {
     std::ifstream file(path);
 
-    std::string str="emre";
-    Raw2Array r2a(str);
+    std::string str="";
+    
     
 
     if (file.is_open())
@@ -20,9 +20,10 @@ void File::getPhoto(std::string path)
 
         while (!file.eof())
         {
-           std::cout << file.get() << " ";
-          
+           str=str + std::to_string(file.get()) + " ";
+           
         }
+        Raw2Array r2a(str);
     }
     else
     {

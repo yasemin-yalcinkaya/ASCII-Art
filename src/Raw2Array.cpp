@@ -6,6 +6,8 @@ Raw2Array::Raw2Array(std::string rawData)
 {
     std::cout<< rawData;
 
+    
+
     // int i=0;
     //  if(i==13){
     //         std::cout << endl;
