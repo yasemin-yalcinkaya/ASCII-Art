@@ -18,6 +18,7 @@ void File::getPhoto(std::string path)
         {
             str = str + std::to_string(file.get()) + " ";
         }
+        str = str.substr(0, str.find_last_of(" "));
         Raw2Array r2a(str);
     }
     else
