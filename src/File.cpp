@@ -1,18 +1,14 @@
 #include "File.hpp"
 
-
 File::File()
 {
 }
-
 
 void File::getPhoto(std::string path)
 {
     std::ifstream file(path);
 
-    std::string str="";
-    
-    
+    std::string str = "";
 
     if (file.is_open())
     {
@@ -20,8 +16,7 @@ void File::getPhoto(std::string path)
 
         while (!file.eof())
         {
-           str=str + std::to_string(file.get()) + " ";
-           
+            str = str + std::to_string(file.get()) + " ";
         }
         Raw2Array r2a(str);
     }

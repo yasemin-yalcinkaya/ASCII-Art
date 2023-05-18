@@ -7,8 +7,7 @@ int main()
 {
     cout << "hello world\n";
 
-    File* f = new File();
+    File *f = new File();
 
     f->getPhoto("image\\AileBoyuKirmiziKare.bmp");
-
 }
