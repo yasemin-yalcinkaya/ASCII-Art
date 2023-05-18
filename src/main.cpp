@@ -9,5 +9,5 @@ int main()
 
     File *f = new File();
 
-    f->getPhoto("image\\AileBoyuKirmiziKare.bmp");
+    f->getPhoto("image\\abcd.bmp");
 }
