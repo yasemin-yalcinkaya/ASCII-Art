@@ -1,7 +1,7 @@
 #ifndef File_hpp
 #define File_hpp
 #include <string>
-#include "Raw2Array.hpp"
+#include "Resize.hpp"
 #include <iostream>
 #include <fstream>
 
@@ -11,6 +11,13 @@ public:
     File();
     ~File();
     void getPhoto(std::string path);
+    int getWidht();
+    int getHeight();
+    int* getArray();
+private:    
+    int* m_array;
+    int m_width;
+    int m_height;
 };
 
 #endif
