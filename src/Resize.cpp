@@ -22,34 +22,64 @@ Resize::Resize(int size, int* array, int height, int widht)
 
         int partArrWidht=(widht/size);  //11
         int partArrHeight=(height/(size*2));    //2
-        int** partArray = new int*[(partArrHeight*partArrWidht)];  //22
+        int** partArray = new int*[(partArrHeight*partArrWidht)*3];  //22*3(rgb değerleri)
 
         
-        
-        
+        std::cout << "\n";std::cout << "\n";
+        std::cout << size<< "sd\n";
         for (int i = 0; i < partArrHeight; i++)      //partArray yükseklik 
         {
             for (int j = 0; j < partArrWidht; j++)   //partArray genişlik
             {
-                int* a = new int[size*(size*2)];
-                partArray[(partArrWidht*i)+j]=a;
+                int* cursor = new int[size*(size*2)*3];
+                partArray[(partArrWidht*i)+j] = cursor;
 
                 for (int k = 0; k < (size*2); k++)    //imlecin yüksekliği
                 {
-                    for (int e = 0; e < size; e++)    //imlecin genişliği
+                    //std::cout << "\n";
+                    for (int l = 0; l < size; l++)    //imlecin genişliği
                     {
-                        
+                         //std::cout << "(";
+                        for(int m=0; m<3; m++)
+                        {
+                            cursor[(k * size * 3) + (l * 3) + m] = array[(k * size * 3) + (l * 3) + m];
+                            if (k>0){
+                                cursor[(k * size * 3) + (l * 3) + m] =  array[m + (l+ (k*(widht-size)) + (k  + i*widht*2 + j)*size)*3 ];
+                            }
+                            else{
+                                 cursor[(k * size * 3) + (l * 3) + m] = array[m + (l+(k + i*widht*2 + j)*size)*3 ];
+                            }
+                            
+                        }
+                        //std::cout << ")";
                     }
-                    
                 }
-                
-                
-            }
-            
+            } 
         }
-        
 
-}
+
+        for (int i = 0; i < partArrHeight; i++)      //partArray yükseklik 
+        {
+            for (int j = 0; j < partArrWidht; j++)   //partArray genişlik
+            {
+                for (int k = 0; k < (size*2); k++)    //imlecin yüksekliği
+                {
+                    std::cout << "\n";
+                    for (int l = 0; l < size; l++)    //imlecin genişliği
+                    {
+                        std::cout << "(";
+                        for(int m=0; m<3; m++)
+                        {
+                            std::cout << partArray[j + i*partArrWidht][m + 3*l + 3*size*k] << ' ';
+                        }
+                        std::cout << ")";
+                    }
+                }
+            std::cout << "\n";
+            } 
+            std::cout << "\n";
+        }
+ }
 
 
 Resize::~Resize()

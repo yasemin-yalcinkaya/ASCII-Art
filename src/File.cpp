@@ -45,6 +45,7 @@ void File::getPhoto(std::string path)
         // init 3D arr
         int *array = new int[(m_width * m_height * 3)];
         m_array=array;
+        
         // set to arr
         for (int x_height = m_height - 1; x_height >= 0; x_height--) // ax
         {

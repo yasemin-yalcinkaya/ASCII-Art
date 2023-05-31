@@ -8,11 +8,11 @@ int main()
 {
     cout << "hello world\n";
 
-    int size=6;
+    int size=2;
     int* array=0;
 
     File *f = new File();
-    f->getPhoto("image\\abcd.bmp");
+    f->getPhoto("image\\KirmiziCizgi.bmp");
     array = f->getArray();
 
 
