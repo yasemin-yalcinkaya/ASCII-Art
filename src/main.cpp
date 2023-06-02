@@ -3,21 +3,25 @@
 #include <string>
 #include "File.hpp"
 #include "Resize.hpp"
+#include "ImageConverter01.hpp"
+
 using namespace std;
 int main()
 {
-    cout << "hello world\n";
 
-    int size=2;
+    int size=45;
     int* array=0;
 
     File *f = new File();
-    f->getPhoto("image\\KirmiziCizgi.bmp");
+    f->getPhoto("image\\minus.bmp");
     array = f->getArray();
 
 
     Resize *r = new Resize(size,array,f->getHeight(),f->getWidht());
 
+    ImageConverter01* ic01 = new ImageConverter01(f->getHeight(),f->getWidht(), size);
+    ic01->convert(array,f->getHeight(),f->getWidht());
+    ic01->print();
 
     
 }
