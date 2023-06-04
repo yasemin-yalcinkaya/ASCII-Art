@@ -1,14 +1,15 @@
 #include "ImageConverter01.hpp"
 
-ImageConverter01::ImageConverter01(int ImgHeight, int ImgWidth, int cursorSize)
+ImageConverter01::ImageConverter01(int ImgHeight, int ImgWidth, int cursorSize, int avg)
 {
+    m_avg=avg;
     m_cursorSize = cursorSize;
     m_Arr01Widht = (ImgWidth / cursorSize);
     m_Arr01Height = (ImgHeight / (cursorSize * 2));
     m_Arr01 = new int *[m_Arr01Height * m_Arr01Widht];
 }
 
-int ImageConverter01::convert(int *array, int ImgHeight, int ImgWidth)
+int ImageConverter01::calculateAvg(int *array, int ImgHeight, int ImgWidth)
 {
     int sum = 0;
     for (int a = 0; a < ImgHeight; a++)
@@ -21,10 +22,14 @@ int ImageConverter01::convert(int *array, int ImgHeight, int ImgWidth)
             }
         }
     }
-    int avg = sum / (ImgHeight * ImgWidth * 3);
-    std::cout << "AVG :" << avg << std::endl;
-    //
+    m_avg = sum / (ImgHeight * ImgWidth * 3);
+    std::cout << "AVG :" << m_avg << std::endl;
 
+    return m_avg;
+}
+
+int ImageConverter01::convert(int *array, int ImgHeight, int ImgWidth)
+{
     for (int i = 0; i < m_Arr01Height; i++)
     {
         for (int j = 0; j < m_Arr01Widht; j++)
@@ -49,7 +54,7 @@ int ImageConverter01::convert(int *array, int ImgHeight, int ImgWidth)
                             pxSum += array[m + (l + (k + i * m_Arr01Widht * 2 + j) * m_cursorSize) * 3];
                         }
                     }
-                    if (pxSum > avg * 3) //
+                    if (pxSum > m_avg * 3) //
                     {
                         cursor01[k * m_cursorSize + l] = 1;
                     }

@@ -2,83 +2,76 @@
 #include <iostream>
 using namespace std;
 
-Resize::Resize(int size, int *array, int height, int widht)
+Resize::Resize(int size, int *array, int height, int widht) {
+  m_size=size;
+  m_width=widht;
+  m_height=height;
+  m_array=array;
+  m_partArrWidht = (m_width / m_size);         // 11
+  m_partArrHeight = (height / (m_size * 2)); // 2
+  m_partArray = new int *[(m_partArrHeight * m_partArrWidht)];  
+}
+
+void Resize::arrayResize()
 {
-
-    // print arr to console
-    // for (int a = 0; a < height; a++)
-    // {
-    //     std::cout << "\n";
-    //     for (int b = 0; b < widht; b++)
-    //     {
-    //         std::cout << "(";
-    //         for (int c = 0; c < 3; c++)
-    //         {
-    //             std::cout << array[(a * widht * 3) + (b * 3) + c] << ' ';
-    //         }
-    //         std::cout << ")";
-    //     }
-    // }
-
-    int partArrWidht = (widht / size);                               // 11
-    int partArrHeight = (height / (size * 2));                       // 2
-    int **partArray = new int *[(partArrHeight * partArrWidht) ]; // 22*3(rgb değerleri)
-
     std::cout << "\n";
-    for (int i = 0; i < partArrHeight; i++) // partArray yükseklik
+  for (int i = 0; i < m_partArrHeight; i++) // partArray yükseklik
+  {
+    for (int j = 0; j < m_partArrWidht; j++) // partArray genişlik
     {
-        for (int j = 0; j < partArrWidht; j++) // partArray genişlik
-        {
-            int *cursor = new int[size * (size * 2) * 3];
-            partArray[(partArrWidht * i) + j] = cursor;
+      int *cursor = new int[m_size * (m_size * 2) * 3];
 
-            for (int k = 0; k < (size * 2); k++) // imlecin yüksekliği
-            {
-                // std::cout << "\n";
-                for (int l = 0; l < size; l++) // imlecin genişliği
-                {
-                    // std::cout << "(";
-                    for (int m = 0; m < 3; m++)
-                    {
-                        cursor[(k * size * 3) + (l * 3) + m] = array[(k * size * 3) + (l * 3) + m];
-                        if (k > 0)
-                        {
-                            cursor[(k * size * 3) + (l * 3) + m] = array[m + (l + (k * (widht - size)) + (k + i * widht * 2 + j) * size) * 3];
-                        }
-                        else
-                        {
-                            cursor[(k * size * 3) + (l * 3) + m] = array[m + (l + (k + i * widht * 2 + j) * size) * 3];
-                        }
-                    }
-                    // std::cout << ")";
-                }
-            }
-        }
-    }
+      m_partArray[(m_partArrWidht * i) + j] = cursor;
 
-    for (int i = 0; i < partArrHeight; i++) // partArray yükseklik
-    {
-        for (int j = 0; j < partArrWidht; j++) // partArray genişlik
+      for (int k = 0; k < (m_size * 2); k++) // imlecin yüksekliği
+      {
+        // std::cout << "\n";
+        for (int l = 0; l < m_size; l++) // imlecin genişliği
         {
-            for (int k = 0; k < (size * 2); k++) // imlecin yüksekliği
-            {
-                std::cout << "\n";
-                for (int l = 0; l < size; l++) // imlecin genişliği
-                {
-                    std::cout << "(";
-                    for (int m = 0; m < 3; m++)
-                    {
-                        std::cout << partArray[j + i * partArrWidht][m + 3 * l + 3 * size * k] << ' ';
-                    }
-                    std::cout << ")";
-                }
+          // std::cout << "(";
+          for (int m = 0; m < 3; m++) {
+            cursor[(k * m_size * 3) + (l * 3) + m] =
+                m_array[(k * m_size * 3) + (l * 3) + m];
+            if (k > 0) {
+              cursor[(k * m_size * 3) + (l * 3) + m] =
+                  m_array[m + (l + (k * (m_width - m_size)) +
+                             (k + i * m_width * 2 + j) * m_size) *
+                                3];
+            } else {
+              cursor[(k * m_size * 3) + (l * 3) + m] =
+                  m_array[m + (l + (k + i * m_width * 2 + j) * m_size) * 3];
             }
-            std::cout << "\n";
+          }
+          // std::cout << ")";
         }
-        std::cout << "\n";
+      }
     }
+  }
 }
 
-Resize::~Resize()
+void Resize::print()
 {
+    for (int i = 0; i < m_partArrHeight; i++) // partArray yükseklik
+  {
+    for (int j = 0; j < m_partArrWidht; j++) // partArray genişlik
+    {
+      for (int k = 0; k < (m_size * 2); k++) // imlecin yüksekliği
+      {
+        std::cout << "\n";
+        for (int l = 0; l < m_size; l++) // imlecin genişliği
+        {
+          std::cout << "(";
+          for (int m = 0; m < 3; m++) {
+            std::cout
+                << m_partArray[j + i * m_partArrWidht][m + 3 * l + 3 * m_size * k] << ' ';
+          }
+          std::cout << ")";
+        }
+      }
+      std::cout << "\n";
+    }
+    std::cout << "\n";
+  }
 }
+
+Resize::~Resize() {}

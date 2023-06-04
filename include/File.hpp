@@ -14,6 +14,7 @@ public:
     int getWidht();
     int getHeight();
     int* getArray();
+    void print();
 private:    
     int* m_array;
     int m_width;

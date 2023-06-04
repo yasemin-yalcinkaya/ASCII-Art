@@ -66,6 +66,23 @@ void File::getPhoto(std::string path)
     }
 }
 
+void File::print(){
+    //print arr to console
+    for (int a = 0; a < m_height; a++)
+    {
+        std::cout << "\n";
+        for (int b = 0; b < m_width; b++)
+        {
+            std::cout << "(";
+            for (int c = 0; c < 3; c++)
+            {
+                std::cout << m_array[(a * m_width * 3) + (b * 3) + c] << ' ';
+            }
+            std::cout << ")";
+        }
+    }
+}
+
 int File::getWidht(){
     return m_width;
 }
