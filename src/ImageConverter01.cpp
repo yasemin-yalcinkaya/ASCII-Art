@@ -28,11 +28,13 @@ int ImageConverter01::calculateAvg(int *array, int ImgHeight, int ImgWidth)
     return m_avg;
 }
 
+
+
 int ImageConverter01::convert(int *array, int ImgHeight, int ImgWidth)
 {
-    for (int i = 0; i < m_Arr01Height; i++)
+    for (int i = 0; i < m_Arr01Height; i++)    //  m_Arr01Height
     {
-        for (int j = 0; j < m_Arr01Widht; j++)
+        for (int j = 0; j < m_Arr01Widht; j++)    //m_Arr01Widht
         {
             int *cursor01 = new int[m_cursorSize * m_cursorSize * 2];
 
@@ -54,18 +56,24 @@ int ImageConverter01::convert(int *array, int ImgHeight, int ImgWidth)
                             pxSum += array[m + (l + (k + i * m_Arr01Widht * 2 + j) * m_cursorSize) * 3];
                         }
                     }
-                    if (pxSum > m_avg * 3) //
+                    std::cout<<"|| pxSum: "<<pxSum<<"  mavg: "<< ( m_avg * 3);
+                    if (pxSum <( m_avg * 3)) //
                     {
                         cursor01[k * m_cursorSize + l] = 1;
                     }
                     else
                     {
+                        
+                        
                         cursor01[k * m_cursorSize + l] = 0;
                     }
                 }
             }
         }
     }
+        std::cout << " height: " << m_Arr01Height << std::endl;
+        std::cout << " width: " << m_Arr01Widht << std::endl;
+        std::cout << " cursor size: " << m_cursorSize << std::endl;
     return 0;
 }
 

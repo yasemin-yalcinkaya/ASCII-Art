@@ -19,6 +19,7 @@ private:
     int* m_array;
     int m_width;
     int m_height;
+    int m_fileSize;
 };
 
 #endif

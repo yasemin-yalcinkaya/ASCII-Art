@@ -9,7 +9,7 @@ Resize::Resize(int size, int *array, int height, int widht) {
   m_array=array;
   m_partArrWidht = (m_width / m_size);         // 11
   m_partArrHeight = (height / (m_size * 2)); // 2
-  m_partArray = new int *[(m_partArrHeight * m_partArrWidht)];  
+  m_partArray = new int *[(m_partArrHeight * m_partArrWidht)]; 
 }
 
 void Resize::arrayResize()

@@ -8,12 +8,12 @@
 using namespace std;
 int main() {
 
-  int size = 3;
+  int size = 1;
   int *array = 0;
   int avg=0;
 
   File *f = new File();
-  f->getPhoto("image\\oldTV.bmp");
+  f->getPhoto("image\\ikiTaneBounty.bmp");
   array = f->getArray();
   f->print();
   
