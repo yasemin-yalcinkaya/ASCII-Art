@@ -6,7 +6,7 @@ class Resize
 public:
 	Resize(int size, int* array,int height, int width);
 	void print();
-	void arrayResize();
+	int** arrayResize();
 	~Resize();
 private:
 	int m_partArrHeight;
