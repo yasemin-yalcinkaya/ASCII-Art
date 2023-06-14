@@ -2,91 +2,92 @@
 
 File::File()
 {
-    m_width=0;
-    m_height=0;
-    m_array=0;
-    m_fileSize=0;
+    m_offset = 0;
+    m_width = 0;
+    m_height = 0;
+    m_array = 0;
+    m_fileSize = 0;
 }
 
 void File::getPhoto(std::string path)
 {
-    std::ifstream file;
-    file.open(path, std::ios::binary | std::ios::in);
+    std::ifstream fs;
+    fs.open(path, std::ios::binary | std::ios::in);
 
-    if (file.is_open())
+    if (fs.is_open())
     {
-        std::cout << file.tellg();
         std::cout << "dosya acildi\n";
 
-        int arr26[26];
-        int cutIndex = 0, offset = 0;
+        // read all file
+        fs.seekg(0, fs.end);
+        int fileSize = fs.tellg();
+        fs.seekg(0, fs.beg);
+        char *buffer = new char[fileSize];
+        fs.read(buffer, fileSize);
+        fs.close();
 
-        for (int i = 0; i < 26; i++)
-        {
-            arr26[i] = file.get();
-        }
- 
         // calculate
-        m_fileSize = arr26[2] + arr26[3] * 256 + arr26[4] * 256 * 256 + arr26[5] * 256 * 256 * 256;
-        offset = arr26[10] + arr26[11] * 256 + arr26[12] * 256 * 256 + arr26[13] * 256 * 256 * 256;
-        m_width = arr26[18] + arr26[19] * 256 + arr26[20] * 256 * 256 + arr26[21] * 256 * 256 * 256;
-        m_height = arr26[22] + arr26[23] * 256 + arr26[24] * 256 * 256 + arr26[25] * 256 * 256 * 256;
-
-        // //read all
-        // std::cout << file.tellg()<< std::endl;
-        // file.seekg(54);
-        // std::cout << file.tellg();
-        // char *buffer = new char[m_fileSize];
-        // file.read(buffer,m_fileSize);
-
+        m_fileSize = buffer[2] + buffer[3] * 256 + buffer[4] * 256 * 256 + buffer[5] * 256 * 256 * 256;
+        m_offset = buffer[10] + buffer[11] * 256 + buffer[12] * 256 * 256 + buffer[13] * 256 * 256 * 256;
+        m_width = buffer[18] + buffer[19] * 256 + buffer[20] * 256 * 256 + buffer[21] * 256 * 256 * 256;
+        m_height = buffer[22] + buffer[23] * 256 + buffer[24] * 256 * 256 + buffer[25] * 256 * 256 * 256;
 
         // print results
-        std::cout << "\n\toffset: \t" << offset
+        std::cout << "\n\toffset: \t" << m_offset
                   << "\n\twidth:  \t" << m_width
                   << "\n\theight: \t" << m_height
                   << "\n\tFile size: \t" << m_fileSize
-                  << "\n\theader size:\t" << arr26[14] + arr26[15] * 256 + arr26[16] * 256 * 256 + arr26[17] * 256 * 256 * 256 << std::endl;
-
-        // move to offset
-        std::cout << "\n\tunhandled:\t";
-        for (int i = 0; i < offset - 26; i++)
-        {
-            std::cout << file.get();
-        }
+                  << "\n\theader size:\t" << buffer[14] + buffer[15] * 256 + buffer[16] * 256 * 256 + buffer[17] * 256 * 256 * 256 << std::endl;
 
         // init 3D arr
         int *array = new int[(m_width * m_height * 3)];
-        m_array=array;
-        
-        // set to arr
-        for (int x_height = m_height - 1; x_height >= 0; x_height--) // ax
+        // calculate extra bytes
+        int extra_width = 0;
+        if ((m_width * 3) % 4)
         {
-            for (int x_width = 0; x_width < m_width; x_width++) // bx
-            {
-                for (int i = 2; i >= 0; i--) // cx
-                {
-                    m_array[(x_height * m_width * 3) + (x_width * 3) + i] = file.get();
-                }
-            }
-            file.get();
+            extra_width = (4 - (((m_width * 3)) % 4));
         }
 
+        //******* prınt buffer
+        // std::cout << "\nbytes:";
+        // for (int i = 0; i < fileSize; i++)
+        // {
+        //     if (i == m_offset)
+        //         std::cout << "\n";
+        //     if ((0 == ((i - m_offset) % ((m_width * 3) + extra_width))) && (i > m_offset))
+        //         std::cout << "\n";
 
-        file.close();
-         // set to arr
-    //    for (int i = 0; i < m_fileSize; i++)
-    //    {
-    //     int a =0;
-    //     if((int)buffer[i]<0){
-    //         a=256+(int)buffer[i];
-    //     }
-    //     else{
-    //         a=(int)buffer[i];
-    //     }
-    //     std::cout <<  a << ' ';
-    //    }
-       
+        //     if ((int)buffer[i] < 0)
+        //         std::cout << 256 + (int)buffer[i] << ' ';
+        //     else
+        //         std::cout << (int)buffer[i] << ' ';
+        // }
+        // std::cout << "\n";
+        //*****
 
+        int temp;
+        for (int i = 0; i < m_height; i++)
+        {
+            for (int j = 0; j < m_width; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    temp = buffer[(i * m_width * 3) + (j * 3) + k + +m_offset + (i * extra_width)];
+
+                    //
+                    if ((int)temp >= 0)
+                    {
+                        array[(((m_height - 1) - i) * m_width * 3) + (j * 3) + 2 - k] = (int)temp;
+                    }
+                    else
+                    {
+                        array[(((m_height - 1) - i) * m_width * 3) + (j * 3) + 2 - k] = (int)temp + 256;
+                    }
+                }
+            }
+        }
+
+        m_array = array;
     }
     else
     {
@@ -94,8 +95,10 @@ void File::getPhoto(std::string path)
     }
 }
 
-void File::print(){
-    //print arr to console
+void File::print()
+{
+    std::cout << "\nFile:";
+    // print arr to console
     for (int a = 0; a < m_height; a++)
     {
         std::cout << "\n";
@@ -111,15 +114,18 @@ void File::print(){
     }
 }
 
-int File::getWidht(){
+int File::getWidht()
+{
     return m_width;
 }
 
-int File::getHeight(){
+int File::getHeight()
+{
     return m_height;
 }
 
-int* File::getArray(){
+int *File::getArray()
+{
     return m_array;
 }
 

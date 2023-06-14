@@ -2,7 +2,7 @@
 
 ImageConverter01::ImageConverter01(int ImgHeight, int ImgWidth, int cursorSize, int avg)
 {
-    m_avg=avg;
+    m_avg = avg;
     m_cursorSize = cursorSize;
     m_Arr01Widht = (ImgWidth / cursorSize);
     m_Arr01Height = (ImgHeight / (cursorSize * 2));
@@ -28,57 +28,39 @@ int ImageConverter01::calculateAvg(int *array, int ImgHeight, int ImgWidth)
     return m_avg;
 }
 
-
-
-int ImageConverter01::convert(int *array, int ImgHeight, int ImgWidth)
+int ImageConverter01::convert(int **part_array, int ImgHeight, int ImgWidth)
 {
-    for (int i = 0; i < m_Arr01Height; i++)    //  m_Arr01Height
+    int pxSum = 0;
+    for (int i = 0; i < m_Arr01Height; i++) //  m_Arr01Height
     {
-        for (int j = 0; j < m_Arr01Widht; j++)    //m_Arr01Widht
+        for (int j = 0; j < m_Arr01Widht; j++) // m_Arr01Widht
         {
-            int *cursor01 = new int[m_cursorSize * m_cursorSize * 2];
+            m_Arr01[i * m_Arr01Widht + j] = new int[m_cursorSize * m_cursorSize * 2];
 
             for (int k = 0; k < m_cursorSize * 2; k++)
             {
                 for (int l = 0; l < m_cursorSize; l++)
                 {
-                    m_Arr01[i * m_Arr01Widht + j] = cursor01;
-                    int pxSum = 0;
-                    for (int m = 0; m < 3; m++)
-                    {
+                    pxSum = 0;
 
-                        if (k > 0)
-                        {
-                            pxSum += array[m + (l + (k * (m_Arr01Widht - m_cursorSize)) + (k + i * m_Arr01Widht * 2 + j) * m_cursorSize) * 3];
-                        }
-                        else
-                        {
-                            pxSum += array[m + (l + (k + i * m_Arr01Widht * 2 + j) * m_cursorSize) * 3];
-                        }
-                    }
-                    std::cout<<"|| pxSum: "<<pxSum<<"  mavg: "<< ( m_avg * 3);
-                    if (pxSum <( m_avg * 3)) //
-                    {
-                        cursor01[k * m_cursorSize + l] = 1;
-                    }
+                    for (int m = 0; m < 3; m++)
+                        pxSum += part_array[j + m_Arr01Widht * i][m + (l * 3) + (3 * m_cursorSize * k)];
+
+                    if (pxSum > (m_avg * 3))
+                        m_Arr01[i * m_Arr01Widht + j][k * m_cursorSize + l] = 1;
+
                     else
-                    {
-                        
-                        
-                        cursor01[k * m_cursorSize + l] = 0;
-                    }
+                        m_Arr01[i * m_Arr01Widht + j][k * m_cursorSize + l] = 0;
                 }
             }
         }
     }
-        std::cout << " height: " << m_Arr01Height << std::endl;
-        std::cout << " width: " << m_Arr01Widht << std::endl;
-        std::cout << " cursor size: " << m_cursorSize << std::endl;
     return 0;
 }
 
 void ImageConverter01::print()
 {
+    std::cout << "\nImgConvert01:";
     for (int i = 0; i < m_Arr01Height; i++) // partArray yükseklik
     {
         for (int j = 0; j < m_Arr01Widht; j++) // partArray genişlik
@@ -88,7 +70,7 @@ void ImageConverter01::print()
                 std::cout << "\n";
                 for (int l = 0; l < m_cursorSize; l++) // imlecin genişliği
                 {
-                    std::cout << ' ' << m_Arr01[j + i * m_Arr01Widht][l + k * m_cursorSize];
+                    std::cout << ' ' << m_Arr01[j + (i * m_Arr01Widht)][l + (k * m_cursorSize)];
                 }
             }
             std::cout << "\n";

@@ -8,7 +8,7 @@ class ImageConverter01
 public:
 	ImageConverter01(int ImgHeight, int ImgWidth, int cursorSize, int avg);
 	int calculateAvg(int *array, int ImgHeight, int ImgWidth);
-	int convert(int *array, int ImgHeight, int ImgWidth);
+	int convert(int **part_array, int ImgHeight, int ImgWidth);
 	void print();
 	~ImageConverter01();
 

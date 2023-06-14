@@ -16,6 +16,7 @@ public:
     int* getArray();
     void print();
 private:    
+    int m_offset;
     int* m_array;
     int m_width;
     int m_height;
